@@ -8,6 +8,7 @@ function App() {
     let [like, setLike] = useState([0, 0, 0]);
     let [modal, setModal] = useState(false);
     let [modalTitle, setModalTitle] = useState(0);
+    let [inputValue, setInputValue] = useState('');
 
     return (
         <div className="App">
@@ -25,7 +26,7 @@ function App() {
                         <div className="list">
                             <h4 onClick={() => {setModal(!modal);
                                 setModalTitle(i)}}>{title[i]}
-                                <span onClick={() => {
+                                <span onClick={(e) => {e.stopPropagation();
                                     let copy = [...like];
                                     copy[i] = copy[i] + 1;
                                     setLike(copy)
@@ -37,11 +38,26 @@ function App() {
                                 setTitle(copy)
                             }}>제목 바꾸기
                             </button>
+                            <button onClick={() => {
+                                let copy = [...title];
+                                copy.splice(i, 1);
+                                setTitle(copy);
+                            }}>글 삭제</button>
                             <p>2월 17일 발행</p>
                         </div>
                     )
                 })
             }
+
+            <input onChange={(e) => {
+                setInputValue(e.target.value);
+            }}></input>
+            <button onClick={() => {
+                let copy = [...title];
+                copy.unshift(inputValue);
+                setTitle(copy);
+            }}>글 추가</button>
+
             {
                 modal === true ? <Modal modalTitle={modalTitle} color={'skyblue'} title={title}/> : null
             }
